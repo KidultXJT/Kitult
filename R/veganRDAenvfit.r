@@ -1,9 +1,9 @@
 ## --------------------------- ##
-##   Title: veganCCA::Points   ##
+##   Title: veganRDA::Points   ##
 ##  Author: Kidult             ##
-##    Date: 2017/9/27          ##
+##    Date: 2018/1/16          ##
 ## --------------------------- ##
-veganCCAenvfit <- function(
+veganRDAenvfit <- function(
   X, # Table X::sp, with more var
   Y=NULL, # Table Y::env
   outDir = getwd(),
@@ -22,11 +22,11 @@ veganCCAenvfit <- function(
   require(vegan)
   require(ggplot2)
   
-  if(!is.null(Y)){prefix = "CCA"}else{prefix = "CA"}
+  if(!is.null(Y)){prefix = "RDA"}else{prefix = "PCA"}
   
-  cca = cca(X,Y)
+  rda = rda(X,Y)
   
-  sum = sumCCAenvfit(X,Y,outDir = outDir)
+  sum = sumRDPenvfit(X,Y,outDir = outDir)
   sumTable  = sum$sumTable
   siteTable = sum$siteTable
   spTable   = sum$spTable
@@ -79,11 +79,11 @@ veganCCAenvfit <- function(
                     Col  = rep("Species",nrow(spTable)))
   
   if (!is.null(Y)){
-    axisName1 = "CCA1("
-    axisName2 = "CCA2("
+    axisName1 = "RDA1("
+    axisName2 = "RDA2("
   }else{
-    axisName1 = "CA1("
-    axisName2 = "CA2("
+    axisName1 = "PCA1("
+    axisName2 = "PCA2("
   }
   
   XTitle = paste(axisName1,as.character(round(sumTable[2,1]*100,2)),"%"," ",as.character(round(sumTable[1,1],2)),")",sep = "")
@@ -162,13 +162,13 @@ veganCCAenvfit <- function(
     p4 = p2 + 
       geom_segment(
         data  = envdf,
-        aes(x = 0, y = 0, xend = X*1.3, yend =Y*1.3),
+        aes(x = 0, y = 0, xend = X*3.5, yend =Y*3.5),
         arrow = arrow(length = unit(0.01, "npc")),
         size  = .2,
         color = "grey10") + 
       geom_text(
         data  = envdf,
-        aes(x = X*1.5, y = Y*1.5, label = Name),
+        aes(x = X*3.8, y = Y*3.8, label = Name),
         color = "grey10"
       )
     
@@ -186,14 +186,14 @@ veganCCAenvfit <- function(
         units = "px", 
         pointsize = 12,
         bg = "white")
-    plot(sum$cca,display = "lc")
+    plot(sum$rda,display = "lc")
     plot(sum$LC,col = "grey")
     plot(sum$LC,col = "red",p.max=pthreshold)
     dev.off()
     pdf(file = paste(path.expand(outDir),"/",prefix,".","FLTenvfitLC.pdf",sep = ""),
         width  = 6.4,
         height = 6.4)
-    plot(sum$cca,display = "lc")
+    plot(sum$rda,display = "lc")
     plot(sum$LC,col = "grey")
     plot(sum$LC,col = "red",p.max=pthreshold)
     dev.off()
@@ -203,14 +203,14 @@ veganCCAenvfit <- function(
         units = "px", 
         pointsize = 12,
         bg = "white")
-    plot(sum$cca,display = "wa")
+    plot(sum$rda,display = "wa")
     plot(sum$LC,col = "grey")
     plot(sum$LC,col = "red",p.max=pthreshold)
     dev.off()
     pdf(file = paste(path.expand(outDir),"/",prefix,".","FLTenvfitWA.pdf",sep = ""),
         width  = 6.4,
         height = 6.4)
-    plot(sum$cca,display = "wa")
+    plot(sum$rda,display = "wa")
     plot(sum$LC,col = "grey")
     plot(sum$LC,col = "red",p.max=pthreshold)
     dev.off()

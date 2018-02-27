@@ -1,9 +1,9 @@
 ## --------------------------- ##
-##   Title: veganCCA::Points   ##
+##   Title: veganRDA::Points   ##
 ##  Author: Kidult             ##
-##    Date: 2017/9/27          ##
+##    Date: 2018/01/16         ##
 ## --------------------------- ##
-veganCCAenvfit <- function(
+veganRDA <- function(
   X, # Table X::sp, with more var
   Y=NULL, # Table Y::env
   outDir = getwd(),
@@ -11,7 +11,7 @@ veganCCAenvfit <- function(
 ){
   # Description:
   #
-  # Function cca performs correspondence analysis, or optionally 
+  # Function rda performs correspondence analysis, or optionally 
   # constrained correspondence analysis (a.k.a. canonical 
   # correspondence analysis), or optionally partial constrained 
   # correspondence analysis. Function rda performs redundancy 
@@ -22,11 +22,26 @@ veganCCAenvfit <- function(
   require(vegan)
   require(ggplot2)
   
-  if(!is.null(Y)){prefix = "CCA"}else{prefix = "CA"}
+  if(!is.null(Y)){prefix = "RDA"}else{prefix = "PCA"}
   
-  cca = cca(X,Y)
+  rda = rda(X,Y)
   
-  sum = sumCCAenvfit(X,Y,outDir = outDir)
+  png(filename = paste(path.expand(outDir),"/",prefix,".","png",sep = ""),
+      width  = 480, 
+      height = 480, 
+      units = "px", 
+      pointsize = 12,
+      bg = "white")
+  plot(rda)
+  dev.off()
+  
+  pdf(file = paste(path.expand(outDir),"/",prefix,".","pdf",sep = ""),
+      width = 6.4, 
+      height = 6.4)
+  plot(rda)
+  dev.off()
+  
+  sum = sumRDA(X,Y,outDir = outDir)
   sumTable  = sum$sumTable
   siteTable = sum$siteTable
   spTable   = sum$spTable
@@ -45,7 +60,7 @@ veganCCAenvfit <- function(
     sidf = data.frame(X = siteTable[,1],
                       Y = siteTable[,2],
                       Name = rownames(siteTable),
-                      Col = rep(Col,nrow(siteTable)))
+                      Col = rep("Site",nrow(siteTable)))
     
   }else{
     
@@ -67,7 +82,7 @@ veganCCAenvfit <- function(
       sidf = data.frame(X = siteTable[,1],
                         Y = siteTable[,2],
                         Name = rownames(siteTable),
-                        Col = rep(Col,nrow(siteTable)))
+                        Col = rep("Site",nrow(siteTable)))
       
     }
   }
@@ -79,11 +94,11 @@ veganCCAenvfit <- function(
                     Col  = rep("Species",nrow(spTable)))
   
   if (!is.null(Y)){
-    axisName1 = "CCA1("
-    axisName2 = "CCA2("
+    axisName1 = "RDA1("
+    axisName2 = "RDA2("
   }else{
-    axisName1 = "CA1("
-    axisName2 = "CA2("
+    axisName1 = "PCA1("
+    axisName2 = "PCA2("
   }
   
   XTitle = paste(axisName1,as.character(round(sumTable[2,1]*100,2)),"%"," ",as.character(round(sumTable[1,1],2)),")",sep = "")
@@ -133,19 +148,19 @@ veganCCAenvfit <- function(
                   color=spdf[,4]),
               size = 3,
               color = "#009944")
-  ggsave(filename = paste(path.expand(outDir),"/",prefix,"envfit.","sp1.pdf",sep = ""),
+  ggsave(filename = paste(path.expand(outDir),"/",prefix,".","sp1.pdf",sep = ""),
          p2,
          width  = 18,
          height = 16)
-  ggsave(filename = paste(path.expand(outDir),"/",prefix,"envfit.","sp1.png",sep = ""),
+  ggsave(filename = paste(path.expand(outDir),"/",prefix,".","sp1.png",sep = ""),
          p2,
          width  = 9,
          height = 8)
-  ggsave(filename = paste(path.expand(outDir),"/",prefix,"envfit.","sp2.pdf",sep = ""),
+  ggsave(filename = paste(path.expand(outDir),"/",prefix,".","sp2.pdf",sep = ""),
          p3,
          width  = 18,
          height = 16)
-  ggsave(filename = paste(path.expand(outDir),"/",prefix,"envfit.","sp2.png",sep = ""),
+  ggsave(filename = paste(path.expand(outDir),"/",prefix,".","sp2.png",sep = ""),
          p3,
          width  = 9,
          height = 8)
@@ -162,58 +177,29 @@ veganCCAenvfit <- function(
     p4 = p2 + 
       geom_segment(
         data  = envdf,
-        aes(x = 0, y = 0, xend = X*1.3, yend =Y*1.3),
+        aes(x = 0, y = 0, xend = X*3.5, yend =Y*3.5),
         arrow = arrow(length = unit(0.01, "npc")),
         size  = .2,
         color = "grey10") + 
       geom_text(
         data  = envdf,
-        aes(x = X*1.5, y = Y*1.5, label = Name),
+        aes(x = X*3.8, y = Y*3.8, label = Name),
         color = "grey10"
       )
     
-    #ggsave(filename = paste(path.expand(outDir),"/",prefix,"envfit.","env.pdf",sep = ""),
+    #ggsave(filename = paste(path.expand(outDir),"/",prefix,".","env.pdf",sep = ""),
     #       p4,
     #       width  = 18,
     #       height = 16)
-    #ggsave(filename = paste(path.expand(outDir),"/",prefix,"envfit.","env.png",sep = ""),
+    #ggsave(filename = paste(path.expand(outDir),"/",prefix,".","env.png",sep = ""),
     #       p4,
     #       width  = 9,
     #       height = 8)
-    png(filename = paste(path.expand(outDir),"/",prefix,".","FLTenvfitLC.png",sep = ""), # filtered by Maximum estimated P value
-        width  = 480, 
-        height = 480, 
-        units = "px", 
-        pointsize = 12,
-        bg = "white")
-    plot(sum$cca,display = "lc")
-    plot(sum$LC,col = "grey")
-    plot(sum$LC,col = "red",p.max=pthreshold)
-    dev.off()
-    pdf(file = paste(path.expand(outDir),"/",prefix,".","FLTenvfitLC.pdf",sep = ""),
-        width  = 6.4,
-        height = 6.4)
-    plot(sum$cca,display = "lc")
-    plot(sum$LC,col = "grey")
-    plot(sum$LC,col = "red",p.max=pthreshold)
-    dev.off()
-    png(filename = paste(path.expand(outDir),"/",prefix,".","FLTenvfitWA.png",sep = ""), # filtered by Maximum estimated P value
-        width  = 480, 
-        height = 480, 
-        units = "px", 
-        pointsize = 12,
-        bg = "white")
-    plot(sum$cca,display = "wa")
-    plot(sum$LC,col = "grey")
-    plot(sum$LC,col = "red",p.max=pthreshold)
-    dev.off()
-    pdf(file = paste(path.expand(outDir),"/",prefix,".","FLTenvfitWA.pdf",sep = ""),
-        width  = 6.4,
-        height = 6.4)
-    plot(sum$cca,display = "wa")
-    plot(sum$LC,col = "grey")
-    plot(sum$LC,col = "red",p.max=pthreshold)
-    dev.off()
   }
-  return(sum)
+  
+  #df = rbind(sidf,spdf,envdf)
+  
+  
+  return(list(Sum = sum,RDA=rda))
+  
 }

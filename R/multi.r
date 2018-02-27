@@ -29,39 +29,3 @@ ggMultiplot <- function(
     }
   }
 }
-
-plotMulti <- function(
-  ...,
-  plotlist=NULL,
-  nrow = 3,
-  ncol = 2,
-  byrow = TRUE
-){
-  # Explain list(...)
-  plots <- c(list(...), plotlist)
-  
-  opar <- par(no.readonly=TRUE)
-  if(byrow){
-    par(mfrow=c(nrow,ncol))
-  }else{
-    par(mfcol=c(nrow,ncol))
-  }
-  
-  for(p in plots){
-    plot(p)
-  }
-  par(opar)
-  return(opar)
-}
-
-splitCol <- function(
-  split, # Add a Formula as :: "A ~ B" or "~ B"
-  ncol=NULL,
-  nrow=NULL,
-  scales="fixed"
-){
-  
-  split = facet_wrap(split, ncol=ncol, nrow=nrow, scales=scales)
-  
-  return(split)
-}

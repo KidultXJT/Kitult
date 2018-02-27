@@ -14,7 +14,7 @@ mantelHeatmap <- function(
                        # SP  :: bray
                        # Env :: euclidean
   method = "pearson",  # Correlation Method::pearson or kandall or spearman. Can Be a list::"pearson,kendall,spearman"
-  brwCol = "RdYlBu",   # select From RColorBrewer::Blues BuGn BuPu GnBu Greens Greys Oranges OrRd PuBu PuBuGn PuRd 
+  brwCol = "RdYlGn",   # select From RColorBrewer::Blues BuGn BuPu GnBu Greens Greys Oranges OrRd PuBu PuBuGn PuRd 
                                                  # Purples RdPu Reds YlGn YlGnBu YlOrBr YlOrRd BrBG PiYG PRGn PuOr
                                                  # RdBu RdGy RdYlBu RdYlGn Spectral
   width  = 30,
@@ -53,7 +53,7 @@ mantelHeatmap <- function(
                                 cor.method  = i,
                                 stat.r = mantel.XY$statistic,
                                 sig.p  = mantel.XY$signif)
-      write.table(mantel.XY.df,paste(path.expand(outDir),"/mantel.",i,".xls",sep = ""),sep = "\t")
+      write.table(mantel.XY.df,paste(path.expand(outDir),"/mantel.",i,".",dist,".xls",sep = ""),sep = "\t",quote = F)
     }
   }else{
     Z.dist = vegdist(Z,method=dist)
@@ -64,19 +64,19 @@ mantelHeatmap <- function(
                                  cor.method  = i,
                                  stat.r = mantel.XY$statistic,
                                  sig.p  = mantel.XY$signif)
-      write.table(mantel.XYZ.df,paste(path.expand(outDir),"/mantelpartial.",i,".xls",sep = ""),sep = "\t")
+      write.table(mantel.XYZ.df,paste(path.expand(outDir),"/mantelpartial.",i,".xls",sep = ""),sep = "\t",quote = F)
     }
   }
   
-  methods = c(strsplit(method,split = ",")[[1]])
-  for(i in methods){
-  mantel.XY = mantel(X.dist,Y.dist, method = i)
-  mantel.XY.df = data.frame(dist.method = dist,
-                            cor.method  = i,
-                            stat.r = mantel.XY$statistic,
-                            sig.p  = mantel.XY$signif)
-  write.table(mantel.XY.df,paste(path.expand(outDir),"/mantel.",i,".xls",sep = ""),sep = "\t")
-  }
+  #methods = c(strsplit(method,split = ",")[[1]])
+  #for(i in methods){
+  #mantel.XY = mantel(X.dist,Y.dist, method = i)
+  #mantel.XY.df = data.frame(dist.method = dist,
+  #                          cor.method  = i,
+  #                          stat.r = mantel.XY$statistic,
+  #                          sig.p  = mantel.XY$signif)
+  #write.table(mantel.XY.df,paste(path.expand(outDir),"/mantel.",i,".xls",sep = ""),sep = "\t")
+  #}
   
   methods = c(strsplit(method,split = ",")[[1]])
   for(i in methods){
@@ -105,11 +105,11 @@ mantelHeatmap <- function(
     colnames(p.m) = colnames(X)
     
     
-    write.table(r.m,paste(path.expand(outDir),"/cor.",i,".",dist,".xls",sep = ""),sep = "\t")
-    write.table(p.m,paste(path.expand(outDir),"/sig.",i,".",dist,".xls",sep = ""),sep = "\t")
+    write.table(r.m,paste(path.expand(outDir),"/mantel.cor.",i,".",dist,".xls",sep = ""),sep = "\t",quote = F)
+    write.table(p.m,paste(path.expand(outDir),"/mantel.sig.",i,".",dist,".xls",sep = ""),sep = "\t",quote = F)
     
     pheatmap(r.m,
-             filename=paste(path.expand(outDir),"/cor.",i,".",dist,".heatmap.png",sep = ""),
+             filename=paste(path.expand(outDir),"/mentel.cor.",i,".",dist,".heatmap.png",sep = ""),
              silent=FALSE,
              color = colorRampPalette(rev(brewer.pal(n = 7, name = brwCol)))(100),
              border_color = "white", # Kidult Style
@@ -117,7 +117,7 @@ mantelHeatmap <- function(
              height=height
     )
     pheatmap(p.m,
-             filename=paste(path.expand(outDir),"/sig.",i,".",dist,".heatmap.png",sep = ""),
+             filename=paste(path.expand(outDir),"/mantel.sig.",i,".",dist,".heatmap.png",sep = ""),
              silent=FALSE,
              color = colorRampPalette(rev(brewer.pal(n = 7, name = brwCol)))(100),
              border_color = "white", # Kidult Style
@@ -125,7 +125,7 @@ mantelHeatmap <- function(
              height=height
     )
     pheatmap(r.m,
-             filename=paste(path.expand(outDir),"/cor.",i,".",dist,".heatmap.pdf",sep = ""),
+             filename=paste(path.expand(outDir),"/mantel.cor.",i,".",dist,".heatmap.pdf",sep = ""),
              silent=FALSE,
              color = colorRampPalette(rev(brewer.pal(n = 7, name = brwCol)))(100),
              border_color = "white", # Kidult Style
@@ -133,7 +133,7 @@ mantelHeatmap <- function(
              height=height
     )
     pheatmap(p.m,
-             filename=paste(path.expand(outDir),"/sig.",i,".",dist,".heatmap.pdf",sep = ""),
+             filename=paste(path.expand(outDir),"/mantel.sig.",i,".",dist,".heatmap.pdf",sep = ""),
              silent=FALSE,
              color = colorRampPalette(rev(brewer.pal(n = 7, name = brwCol)))(100),
              border_color = "white", # Kidult Style
@@ -142,5 +142,6 @@ mantelHeatmap <- function(
     )
   }
   return(list(Sig  = p.m,
-              Stat = r.m))
+              Stat = r.m,
+              mantel = mantel.XY.df))
 }
