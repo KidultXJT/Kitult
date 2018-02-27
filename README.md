@@ -12,7 +12,6 @@ This is a R package For complicated Stat and Visualization.
 Installation
 ------------
 
-
 Functions
 ------------
 
@@ -23,8 +22,8 @@ Contact
 ------------
 Contact me if you have any problem.
 
-- Author:   Kidult X
-- Email:    <junting.xie@sagene.com.cn>
+- Author:   Kidult
+- Email:    <xjtbiol20@hotmail.com>
 
 
 
