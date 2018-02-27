@@ -1,0 +1,51 @@
+exportPattern("^[[:alpha:]]+")
+
+export(
+  # Big Analysis Function
+  corHeatmap,
+  mantelHeatmap,
+  veganCCA,
+  veganCCAenvfit,
+  
+  # SomeThings about Theme
+  reportStyle,
+  
+  # Multi
+  ggMultiplot,
+  plotMulti,
+  
+  # ggplot Basic Graph
+  ggBasicPoint,
+  ggBasicText,
+  ggBasicBar,
+  ggBasicFreqBar,
+  ggBasicStack,
+  ggBasicBox,
+  ggBasicDensity,
+  ggBasicLine,
+  
+  # enHance Graph
+  phm, # pheatmap
+  brwCol,
+  
+  # Statistic Ordination
+  sumCCA,
+  sumCCAenvfit,
+  
+  # miniReport
+  htmlTable,
+  d3hm # dynamic
+)
+
+import(RColorBrewer,
+       ggplot2,
+       gtable,
+       #grid,
+       pheatmap,
+       #scales,
+       vegan,
+       knitr,
+       #kableExtra,
+       #d3heatmap,
+       #corrgram,
+       rmarkdown)
