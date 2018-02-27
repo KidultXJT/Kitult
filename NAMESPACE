@@ -6,46 +6,41 @@ export(
   mantelHeatmap,
   veganCCA,
   veganCCAenvfit,
+  NormalTEST,
+  QQ,
+  PP,
   
   # SomeThings about Theme
   reportStyle,
   
   # Multi
   ggMultiplot,
-  plotMulti,
   
   # ggplot Basic Graph
   ggBasicPoint,
   ggBasicText,
-  ggBasicBar,
-  ggBasicFreqBar,
-  ggBasicStack,
-  ggBasicBox,
-  ggBasicDensity,
-  ggBasicLine,
-  
-  # enHance Graph
-  phm, # pheatmap
-  brwCol,
   
   # Statistic Ordination
   sumCCA,
   sumCCAenvfit,
-  
+
   # miniReport
   htmlTable,
-  d3hm # dynamic
+  
+  # Advance
+  d3hm
 )
+
+
 
 import(RColorBrewer,
        ggplot2,
        gtable,
-       #grid,
+       grid,
        pheatmap,
-       #scales,
+       scales,
        vegan,
        knitr,
-       #kableExtra,
-       #d3heatmap,
-       #corrgram,
+       #plotly, # devtools::install_github('hadley/ggplot2')
+       kableExtra,
        rmarkdown)
