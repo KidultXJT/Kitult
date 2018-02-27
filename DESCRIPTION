@@ -4,9 +4,8 @@ Title: Kitult
 Version: 1.0
 Date: 2017-09-29
 Author: Kitult
-Maintainer: Kitult <junting.xie@sagene.com.cn>
+Maintainer: Kitult <xjtbiol20@hotmail.com>
 Description: Too Many Things To Say.
-License: sagene
 License: GPL-3
 Depends: R (>= 2.0.0)
 Imports: RColorBrewer,ggplot2,gtable,pheatmap,vegan,knitr,rmarkdown
