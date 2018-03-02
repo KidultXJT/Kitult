@@ -1,3 +1,6 @@
+require(pheatmap)
+require(methods)
+
 brwCol <- function(){
   return("HEATMAP Color, Please Try This: Blues BuGn BuPu GnBu Greens Greys Oranges OrRd PuBu PuBuGn PuRd Purples RdPu Reds YlGn YlGnBu YlOrBr YlOrRd BrBG PiYG PRGn PuOr RdBu RdGy RdYlBu RdYlGn Spectral")
 }
@@ -12,7 +15,8 @@ phm <- function(
   width=8,
   height=12,
   dismethod = "euclidean",
-  clustermethod = "complete"
+  clustermethod = "complete",
+  scale = "none"
 ){
   # Package 
   require(pheatmap)
@@ -21,6 +25,7 @@ phm <- function(
     pheatmap(matrix,
              #filename=filename,
              silent=FALSE,
+             scale=scale,
              color = colorRampPalette(rev(brewer.pal(n = 7, name = brwCol)))(100),
              border_color = border_color,
              width=width, 
@@ -32,6 +37,7 @@ phm <- function(
     pheatmap(matrix,
              filename=filename,
              silent=FALSE,
+             scale=scale,
              color = colorRampPalette(rev(brewer.pal(n = 7, name = brwCol)))(100),
              border_color = border_color,
              width=width, 

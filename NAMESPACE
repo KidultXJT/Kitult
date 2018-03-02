@@ -31,8 +31,6 @@ export(
   d3hm
 )
 
-
-
 import(RColorBrewer,
        ggplot2,
        gtable,
@@ -45,10 +43,10 @@ import(RColorBrewer,
        kableExtra,
        rmarkdown,
        ape,
-       plyr,
+       #plyr,
        dplyr,
        ggthemr,
-       ggtree,
+       #ggtree,
        pROC,
        phyloseq,
        phytools,
