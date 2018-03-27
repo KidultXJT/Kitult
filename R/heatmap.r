@@ -16,7 +16,9 @@ phm <- function(
   height=12,
   dismethod = "euclidean",
   clustermethod = "complete",
-  scale = "none"
+  scale = "none",
+  cluster_rows = TRUE,
+  cluster_cols = TRUE
 ){
   # Package 
   require(pheatmap)
@@ -30,6 +32,8 @@ phm <- function(
              border_color = border_color,
              width=width, 
              height=height,
+             cluster_rows = cluster_rows,
+             cluster_cols = cluster_cols,
              clustering_distance_rows = dismethod,
              clustering_distance_rols = dismethod,
              clustering_method = clustermethod)
@@ -42,6 +46,8 @@ phm <- function(
              border_color = border_color,
              width=width, 
              height=height,
+             cluster_rows = cluster_rows,
+             cluster_cols = cluster_cols,
              clustering_distance_rows = dismethod,
              clustering_distance_rols = dismethod,
              clustering_method = clustermethod
